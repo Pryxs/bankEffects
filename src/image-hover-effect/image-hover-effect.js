@@ -5,7 +5,8 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 
 
 export default function imageHoverEffect() {
-  
+  console.log('IMAGE')
+
       var camera, scene, renderer, composer,renderPass,customPass;
       var geometry, material, mesh, texture,uMouse = new THREE.Vector2(0,0);
       var img = document.getElementById('texture');

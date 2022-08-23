@@ -6,7 +6,8 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
     },
-    devServer: {
-        port: 3000
-      },
+    // entry: [
+    //      './src/image-hover-effect/image-hover-effect.js',
+    //      './src/retro-background/retro-background.js',
+    // ],
 };
