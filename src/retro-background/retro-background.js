@@ -8,7 +8,6 @@ export default function retroBackground() {
     camera,
     renderer,
     uniforms = {},
-    shaderCode,
     [right, down]  = [true, true],
     material,
     geometry,

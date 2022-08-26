@@ -1,5 +1,6 @@
 import imageHoverEffect from './image-hover-effect/image-hover-effect.js';
 import retroBackground from './retro-background/retro-background.js';
+import grainBackground from './grain-background/grain-background.js';
 
 function kebabToCamel(pageName){
     return pageName.replace(/-./g, x=>x[1].toUpperCase());
@@ -17,6 +18,9 @@ switch (getCurrentPage()) {
         break;
     case 'retroBackground':
         retroBackground();
+        break;
+    case 'grainBackground':
+        grainBackground();
         break;
     default:
 }
