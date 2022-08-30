@@ -1,0 +1,27 @@
+body { 
+    margin: 0; 
+    position: relative;
+}
+
+.slider{
+	max-height: 100vh;
+	overflow-y: scroll;
+	scroll-snap-type: y mandatory;
+}
+.slider_item{
+	height: 100vh;
+	scroll-snap-align: start;
+
+}
+
+.slider_item:nth-child(1){
+	background-color: red;
+}
+
+.slider_item:nth-child(2){
+	background-color: green;
+}
+
+.slider_item:nth-child(3){
+	background-color: blue;
+}
