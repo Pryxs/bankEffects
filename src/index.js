@@ -2,8 +2,6 @@ import imageHoverEffect from './image-hover-effect/image-hover-effect.js';
 import retroBackground from './retro-background/retro-background.js';
 import grainBackground from './grain-background/grain-background.js';
 import verticalSlider from './vertical-slider/vertical-slider.js';
-// import loader from './loader/loader.js';
-
 
 
 function kebabToCamel(pageName){
@@ -28,9 +26,6 @@ switch (getCurrentPage()) {
         break;
     case 'verticalSlider':
         verticalSlider();
-        break;
-    case 'loader':
-        // loader();
         break;
     default:
 }
