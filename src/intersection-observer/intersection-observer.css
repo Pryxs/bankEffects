@@ -1,0 +1,36 @@
+section{
+    height: 130vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section:first-child{
+    background-color: brown;
+}
+
+section:nth-child(3){
+    background-color:darkcyan;
+}
+
+h1{
+    color: whitesmoke;
+    font-size: 3rem;
+    font-family: sans-serif;
+    margin: 0;
+}
+
+.ahead-container{
+    transform: scale(0);
+    transform-origin: right;
+}
+
+.ahead{
+    background-color: indianred;
+    padding: 1rem;
+    color: whitesmoke;
+    margin: 1rem 0;
+    transform: translateX(-100%);
+    transition: .5s ease-in;
+}
