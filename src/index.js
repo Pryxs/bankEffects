@@ -1,7 +1,9 @@
 import imageHoverEffect from './image-hover-effect/image-hover-effect.js';
 import retroBackground from './retro-background/retro-background.js';
 import grainBackground from './grain-background/grain-background.js';
-import verticalSlider from './vertical-slider/vertical-slider.js';
+import squareBackground from './square-background/square-background.js';
+import parallaxe from './parallaxe/parallaxe.js';
+// import verticalSlider from './vertical-slider/vertical-slider.js';
 
 
 function kebabToCamel(pageName){
@@ -13,7 +15,7 @@ function getCurrentPage(){
     var currentPage = path.split("/").pop().split('.')[0];
     return kebabToCamel(currentPage);
 }
-console.log(getCurrentPage())
+
 switch (getCurrentPage()) {
     case 'imageHoverEffect':
         imageHoverEffect();
@@ -24,8 +26,14 @@ switch (getCurrentPage()) {
     case 'grainBackground':
         grainBackground();
         break;
+    case 'squareBackground':
+        squareBackground();
+        break;
+    case 'parallaxe':
+        parallaxe();
+        break;
     case 'verticalSlider':
-        verticalSlider();
+        // verticalSlider();
         break;
     default:
 }
