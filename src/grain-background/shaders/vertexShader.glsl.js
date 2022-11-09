@@ -1,4 +1,8 @@
 
+// manipulation des sommets
+// uv => coordonnées de texture
+// transforme nos coordonnées de texture pour les passer au fragment shader
+
 const vertexShader = `
   varying vec2 vUv;
   void main() {

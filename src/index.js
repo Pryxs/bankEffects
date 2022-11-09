@@ -3,6 +3,8 @@ import retroBackground from './retro-background/retro-background.js';
 import grainBackground from './grain-background/grain-background.js';
 import squareBackground from './square-background/square-background.js';
 import intersection from './intersection-observer/intersection-observer.js';
+import threeSandbox from './three-sandbox/three-sandbox.js';
+
 
 
 function kebabToCamel(pageName){
@@ -30,6 +32,9 @@ switch (getCurrentPage()) {
         break;
     case 'intersection':
         intersection();
+        break;
+    case 'threeSandbox':
+        threeSandbox();
         break;
     default:
 }
