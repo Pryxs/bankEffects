@@ -122,14 +122,22 @@ export default function threeSandbox() {
     ANIMATE
     */
 
-    function animate(){
+    function animate(time){
         rayCaster.setFromCamera(mousePosition, camera);
-        const intersects = rayCaster.intersectObjects(scene.children);
+        var intersects = rayCaster.intersectObjects(scene.children);
+        var sphereHovered = false;
+
         for (const object of intersects) {
             if(object.object.id === sphere.id){
                 sphere.scale.set(1.3, 1.3, 1.3);
+                sphereHovered = true;
             }
         }
+
+        if(!sphereHovered){
+            sphere.scale.set(1, 1, 1);
+        }
+
         renderer.render(scene, camera);
     }
 

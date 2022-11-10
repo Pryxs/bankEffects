@@ -4,7 +4,7 @@ import grainBackground from './grain-background/grain-background.js';
 import squareBackground from './square-background/square-background.js';
 import intersection from './intersection-observer/intersection-observer.js';
 import threeSandbox from './three-sandbox/three-sandbox.js';
-
+import threeScrolling from './three-scrolling/three-scrolling.js';
 
 
 function kebabToCamel(pageName){
@@ -30,11 +30,14 @@ switch (getCurrentPage()) {
     case 'squareBackground':
         squareBackground();
         break;
-    case 'intersection':
+    case 'intersectionObserver':
         intersection();
         break;
     case 'threeSandbox':
         threeSandbox();
+        break;
+    case 'threeScrolling':
+        threeScrolling();
         break;
     default:
 }
