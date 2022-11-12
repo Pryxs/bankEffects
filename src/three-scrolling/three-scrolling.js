@@ -1,6 +1,10 @@
 import * as THREE from 'three';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+
+import gsap from 'gsap';
 
 import landscape from '../../assets/landscape.jpg';
 import landscape2 from '../../assets/landscape2.jpg';
@@ -32,6 +36,7 @@ export default function threeScrolling() {
     directionalLight.position.set(0, 0, 100);
     scene.add(directionalLight);
 
+
     // moteur de rendu
     const renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setSize( viewportWidth, viewportHeight );
@@ -45,6 +50,7 @@ export default function threeScrolling() {
     const objLoader = new OBJLoader();
     const textureLoader = new THREE.TextureLoader();
     var imagesId = [];
+    var textes = [];
 
     mtlLoader.load("../../assets/bottle2.mtl", (materials) =>{
         materials.preload();
@@ -56,7 +62,7 @@ export default function threeScrolling() {
         });
     });
 
-    function createImagePlane(src, position, rotation){
+    function createImagePlane(text, textPosition, textRotation, src, position, rotation){
         var image = new Image();
         image.src = src;
         image.onload = function() {
@@ -74,12 +80,13 @@ export default function threeScrolling() {
             plane.position.set(position.x, position.y, position.z);
             scene.add( plane );
             imagesId.push(plane.id)
+            createText(text, textPosition, textRotation, plane.id);
         }
     }
 
-    createImagePlane(landscape, new THREE.Vector3(0, 15, -3.5), 0);
-    createImagePlane(landscape2, new THREE.Vector3(0, 10, 3.5), Math.PI);
-    createImagePlane(landscape3, new THREE.Vector3(-3.5, 5, -3), Math.PI/4);
+    createImagePlane('Montagnes', new THREE.Vector3(3.5, 15, -7.5), Math.PI, landscape, new THREE.Vector3(0, 15, -3.5), 0);
+    createImagePlane('Pierres', new THREE.Vector3(-2, 10, 3.5), 0, landscape2, new THREE.Vector3(0, 10, 3.5), Math.PI);
+    createImagePlane('Champs',  new THREE.Vector3(-3, 5, -8), 5*Math.PI/4, landscape3, new THREE.Vector3(-3.5, 5, -3), Math.PI/4);
 
 
     function planeCurve(geometry, z){
@@ -123,7 +130,37 @@ export default function threeScrolling() {
         
         pos.needsUpdate = true;
     }
-   
+
+
+    function createText(text, position, textRotation, parentId){
+        const loader = new FontLoader();
+        loader.load( 'https://threejs.org/examples/fonts/gentilis_regular.typeface.json', function ( font ){
+            const textGeometry = new TextGeometry(text, {
+                font: font,
+                size: 1,
+                height: 0,
+                curveSegments: 12,
+
+            })
+
+            const textMesh = new THREE.Mesh(textGeometry, [
+                new THREE.MeshPhongMaterial({ color : 0x111111,  transparent: true}),
+                new THREE.MeshPhongMaterial({ color : 0x111111,  transparent: true})
+            ])
+
+            textMesh.position.set(position.x, position.y, position.z + 2);
+            textMesh.rotation.y = textRotation;
+            textMesh.material[0].opacity = 0;
+            textMesh.material[1].opacity = 0;
+            scene.add(textMesh);
+            textes.push({
+                parentId : parentId,
+                object : textMesh
+            });
+        });
+    }
+
+
     /*
     HELPER
     */
@@ -159,18 +196,61 @@ export default function threeScrolling() {
 
     const rayCaster = new THREE.Raycaster();
 
+    function onWindowResize(event) {
+        viewportWidth = window.innerWidth;
+        viewportHeight = window.innerHeight;
+
+        uniforms.resolution.value.x = viewportWidth;
+        uniforms.resolution.value.y = viewportHeight;
+
+        renderer.setSize( viewportWidth, viewportHeight );
+        mesh.scale.set( viewportWidth, viewportHeight, 1 );
+
+        camera.left   = viewportWidth / - 2;
+        camera.right  = viewportWidth / 2;
+        camera.top    = viewportHeight / 2;
+        camera.bottom = viewportHeight / - 2;
+        camera.updateProjectionMatrix();
+    }
+
     /* 
     ANIMATE
     */
 
+    var hoveredElements = [];
     function animate(time){
         rayCaster.setFromCamera(mousePosition, camera);
         var intersects = rayCaster.intersectObjects(scene.children);
         // debugRayCaster(intersects);
 
+        // display text
         for (const intersect of intersects) {
             if(imagesId.find(element => element === intersect.object.id)){
-                intersect.object.scale.set(1.3,1.3,1.3)
+                let text = textes.find(element => element.parentId === intersect.object.id);
+                if(text){
+                    gsap.to(text.object.material[0], {
+                        opacity: 1,
+                        duration: .4,
+                        ease: "power2.easeInOut",
+                    })
+                    // text.object.material[0].opacity = 1;
+                    if(!hoveredElements.find(element => element === intersect.object.id)){
+                        hoveredElements.push(intersect.object.id);
+                    }
+                }
+            }
+        }
+
+        // remove text
+        for (const hoveredElement of hoveredElements) {
+            if(!intersects.find(element => element.object.id === hoveredElement)){
+                let text = textes.find(element => element.parentId === hoveredElement);
+                gsap.to(text.object.material[0], {
+                    opacity: 0,
+                    duration: .4,
+                    ease: "power2.easeOut",
+                })
+            hoveredElements.splice(hoveredElements.indexOf(hoveredElement));
             }
         }
 
@@ -187,6 +267,7 @@ export default function threeScrolling() {
         }
 
         camera.position.set(pos.x, pos.y, pos.z);
+        directionalLight.position.set(pos.x, 10, pos.z);
         camera.lookAt( 0, 10, 0 );
 
         renderer.render(scene, camera);
